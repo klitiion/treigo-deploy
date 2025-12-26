@@ -1,0 +1,424 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>trèigo — coming soon</title>
+
+  <!-- Google Font: Poppins Italic 400 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=ios" />
+
+  <style>
+    /* Bottom-right links (App Store + Instagram) */
+    .corner-links{
+      position: fixed;
+      right: calc(14px + var(--safe-right));
+      bottom: calc(14px + var(--safe-bottom));
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      z-index: 2;
+      pointer-events: auto;
+      flex-wrap: wrap;
+    }
+
+    .corner-link{
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 999px;
+      color: rgba(255,255,255,0.98);
+      text-decoration: none;
+      user-select: none;
+      background: rgba(0,0,0,0.18);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.16);
+      box-shadow:
+        0 14px 34px rgba(0,0,0,0.16),
+        0 2px 10px rgba(0,0,0,0.10);
+      transition: transform 220ms ease, background 220ms ease, border-color 220ms ease;
+      pointer-events: auto;
+      min-height: 40px;
+    }
+
+    .corner-link:hover{
+      transform: translateY(-2px);
+      background: rgba(0,0,0,0.24);
+      border-color: rgba(255,255,255,0.24);
+    }
+
+    .corner-link .label{
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      line-height: 1;
+    }
+
+    .material-symbols-outlined{
+      font-variation-settings: 'FILL' 1, 'wght' 500, 'GRAD' 0, 'opsz' 24;
+      font-size: 20px;
+      line-height: 1;
+      display: inline-block;
+    }
+
+    .ig-icon{
+      width: 20px;
+      height: 20px;
+      display: inline-block;
+      filter: drop-shadow(0 8px 16px rgba(0,0,0,0.14));
+    }
+
+    /* Keep corner links clear on small screens */
+    @media (max-width: 420px){
+      .corner-link .label{ display: none; }
+      .corner-link{ padding: 10px; }
+      .corner-link{ min-width: 44px; justify-content: center; }
+    }
+    :root {
+      --bg: #57b48f;
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
+      --safe-top: env(safe-area-inset-top, 0px);
+      --safe-left: env(safe-area-inset-left, 0px);
+      --safe-right: env(safe-area-inset-right, 0px);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; margin: 0; }
+
+    body{
+      background: var(--bg);
+      cursor: none; /* hide native cursor (we draw a custom one) */
+      overflow: hidden;
+      font-family: "Poppins", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    .wrap{
+      height: 100%;
+      width: 100%;
+      position: relative;
+      display: grid;
+      place-items: center;
+      padding: calc(24px + var(--safe-top)) calc(18px + var(--safe-right)) calc(96px + var(--safe-bottom)) calc(18px + var(--safe-left));
+      z-index: 1;
+    }
+
+    .title{
+      color: #fff;
+      font-style: italic;
+      font-weight: 400;
+      letter-spacing: 0.02em;
+      text-align: center;
+      user-select: none;
+      will-change: transform;
+      transform: translate3d(0,0,0);
+
+      /* floating look */
+      text-shadow:
+        0 10px 25px rgba(0,0,0,0.18),
+        0 2px 6px rgba(0,0,0,0.16);
+
+      /* subtle ambient float */
+      animation: floaty 5.5s ease-in-out infinite;
+    }
+
+    @keyframes floaty{
+      0%,100% { transform: translate3d(0,0,0); }
+      50%     { transform: translate3d(0,-6px,0); }
+    }
+
+    /* responsive sizing */
+    .title{
+      font-size: clamp(34px, 9vw, 56px);
+      line-height: 1.05;
+    }
+
+    .footer{
+      position: fixed;
+      left: 50%;
+      bottom: calc(22px + var(--safe-bottom));
+      transform: translateX(-50%);
+      color: #ffffff;
+      font-weight: 700;
+      font-style: normal;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      user-select: none;
+      pointer-events: none;
+      z-index: 0;
+      text-shadow:
+        0 10px 25px rgba(0,0,0,0.14),
+        0 2px 6px rgba(0,0,0,0.12);
+    }
+
+    /* Custom cursor (like 3bconsultingroup.com: dot leads, ring follows + hover/click) */
+    .cursor-dot,
+    .cursor-ring{
+      position: fixed;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate3d(-100px,-100px,0);
+      will-change: transform, opacity;
+      opacity: 0;
+    }
+
+    .cursor-dot{
+      width: 12px;
+      height: 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.95);
+      box-shadow: 0 10px 22px rgba(0,0,0,0.14);
+    }
+
+    .cursor-ring{
+      width: 44px;
+      height: 44px;
+      border-radius: 999px;
+      border: 2px solid rgba(255,255,255,0.88);
+      background: transparent;
+      box-shadow: 0 18px 34px rgba(0,0,0,0.10);
+    }
+
+    /* Enter animation: dot appears first, ring follows */
+    body.cursor-active .cursor-dot{
+      opacity: 1;
+      transition: opacity 160ms ease;
+    }
+
+    body.cursor-active .cursor-ring{
+      opacity: 1;
+      transition: opacity 260ms ease 90ms;
+    }
+
+    /* Hover state (links/buttons) */
+    body.cursor-hover .cursor-ring{
+      border-color: rgba(255,255,255,0.95);
+    }
+
+    /* Click state */
+    body.cursor-down .cursor-ring{
+      border-color: rgba(255,255,255,0.95);
+    }
+
+    /* Optional: hide custom cursor on touch-only devices */
+    @media (hover: none) and (pointer: coarse){
+      .cursor-dot, .cursor-ring{ display: none; }
+      body{ cursor: auto; }
+    }
+
+    /* Mobile polish */
+    @media (max-width: 520px){
+      .wrap{
+        /* shift the centered title slightly lower on mobile */
+        padding-top: calc(56px + var(--safe-top));
+        padding-bottom: calc(96px + var(--safe-bottom));
+      }
+
+      .corner-links{
+        right: calc(12px + var(--safe-right));
+        bottom: calc(12px + var(--safe-bottom));
+        gap: 10px;
+        flex-direction: column;
+        align-items: flex-end;
+      }
+
+      .corner-link{
+        padding: 10px 12px;
+      }
+
+      .footer{
+        bottom: calc(70px + var(--safe-bottom));
+        font-size: 12px;
+        letter-spacing: 0.16em;
+      }
+    }
+
+    @media (max-width: 520px){
+      .title{ font-size: clamp(44px, 14vw, 72px); }
+    }
+
+    @media (max-width: 360px){
+      .title{ font-size: clamp(46px, 16vw, 76px); }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="title" id="title">trèigo</div>
+  </div>
+  <div class="footer">AL | EU</div>
+  <div class="corner-links" aria-label="Treigo links">
+    <a class="corner-link" href="https://apps.apple.com/" target="_blank" rel="noopener noreferrer" aria-label="Open App Store">
+      <span class="material-symbols-outlined" aria-hidden="true">ios</span>
+      <span class="label">App Store</span>
+    </a>
+
+    <a class="corner-link" href="https://instagram.com/treigo.eu" target="_blank" rel="noopener noreferrer" aria-label="Open Instagram: @treigo.eu">
+      <svg class="ig-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path fill="currentColor" d="M7.5 2h9A5.5 5.5 0 0 1 22 7.5v9A5.5 5.5 0 0 1 16.5 22h-9A5.5 5.5 0 0 1 2 16.5v-9A5.5 5.5 0 0 1 7.5 2Zm0 2A3.5 3.5 0 0 0 4 7.5v9A3.5 3.5 0 0 0 7.5 20h9A3.5 3.5 0 0 0 20 16.5v-9A3.5 3.5 0 0 0 16.5 4h-9Zm10.75 1.75a1 1 0 1 1 0 2 1 1 0 0 1 0-2ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z"/>
+      </svg>
+      <span class="label">@treigo.eu</span>
+    </a>
+  </div>
+  <div class="cursor-dot" id="cursorDot" aria-hidden="true"></div>
+  <div class="cursor-ring" id="cursorRing" aria-hidden="true"></div>
+
+  <script>
+    // Smooth inverse-parallax: text moves slightly opposite the cursor
+    const title = document.getElementById("title");
+    const cursorDot = document.getElementById("cursorDot");
+    const cursorRing = document.getElementById("cursorRing");
+
+    let mouseX = window.innerWidth / 2;
+    let mouseY = window.innerHeight / 2;
+
+    // Dot leads (fast), ring follows (slow)
+    let dotX = mouseX, dotY = mouseY;
+    let ringX = mouseX, ringY = mouseY;
+
+    // Scale animation targets
+    let ringScale = 1;
+    let dotScale = 1;
+    let targetRingScale = 1;
+    let targetDotScale = 1;
+
+    const dotEase = 0.35;
+    const ringEase = 0.22;
+    const scaleEase = 0.18;
+
+    let cursorActivated = false;
+
+    // Show cursor immediately on load (starts centered)
+    cursorActivated = true;
+    document.body.classList.add("cursor-active");
+
+    // current + target offset
+    let tx = 0, ty = 0;
+    let targetX = 0, targetY = 0;
+
+    // strength (px at screen edge)
+    const strength = 14; // adjust 8–20 for more/less motion
+    const ease = 0.08;   // smaller = slower/smoother
+
+    function onMove(e){
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+
+      if (!cursorActivated) {
+        cursorActivated = true;
+        document.body.classList.add("cursor-active");
+      }
+
+      const w = window.innerWidth || 1;
+      const h = window.innerHeight || 1;
+
+      const x = (e.clientX / w) * 2 - 1; // -1..1
+      const y = (e.clientY / h) * 2 - 1; // -1..1
+
+      // opposite direction of cursor
+      targetX = -x * strength;
+      targetY = -y * strength;
+    }
+
+    // Touch support
+    function onTouch(e){
+      const t = e.touches && e.touches[0];
+      if (!t) return;
+      onMove({ clientX: t.clientX, clientY: t.clientY });
+    }
+
+    function tick(){
+      // ease toward target
+      tx += (targetX - tx) * ease;
+      ty += (targetY - ty) * ease;
+
+      // combine with float animation by applying a wrapper transform via CSS variable-esque approach:
+      // easiest: apply a translate on top of existing animation by using a nested element.
+      // But we already animate .title transform; so instead we apply parallax via translate on a parent.
+      // We'll do it by translating the element using an extra translate via translate3d in a CSS transform
+      // without fighting the keyframes: move the title by translating its container.
+      title.style.translate = `${tx}px ${ty}px`; // modern property; smooth & doesn't override transform
+
+      // --- custom cursor follow (dot first, ring follows) ---
+      dotX += (mouseX - dotX) * dotEase;
+      dotY += (mouseY - dotY) * dotEase;
+
+      ringX += (dotX - ringX) * ringEase;
+      ringY += (dotY - ringY) * ringEase;
+
+      // scale easing
+      ringScale += (targetRingScale - ringScale) * scaleEase;
+      dotScale += (targetDotScale - dotScale) * scaleEase;
+
+      // center elements on pointer (dot 10px, ring 44px)
+      cursorDot.style.transform = `translate3d(${dotX - 6}px, ${dotY - 6}px, 0) scale(${dotScale})`;
+      cursorRing.style.transform = `translate3d(${ringX - 22}px, ${ringY - 22}px, 0) scale(${ringScale})`;
+
+      requestAnimationFrame(tick);
+    }
+
+    window.addEventListener("mousemove", onMove, { passive: true });
+    window.addEventListener("mouseenter", () => {
+      document.body.classList.add("cursor-active");
+      cursorActivated = true;
+    });
+    window.addEventListener("touchmove", onTouch, { passive: true });
+
+    // Hover targets (feel like the reference site)
+    const hoverSelector = "a, button, [role='button'], input, textarea, select, label";
+
+    document.addEventListener("mouseover", (e) => {
+      if (e.target && e.target.closest && e.target.closest(hoverSelector)) {
+        document.body.classList.add("cursor-hover");
+        targetRingScale = 1.55;
+        targetDotScale = 0.9;
+      }
+    }, { passive: true });
+
+    document.addEventListener("mouseout", (e) => {
+      if (e.target && e.target.closest && e.target.closest(hoverSelector)) {
+        document.body.classList.remove("cursor-hover");
+        targetRingScale = 1;
+        targetDotScale = 1;
+      }
+    }, { passive: true });
+
+    // Click feel
+    window.addEventListener("mousedown", () => {
+      document.body.classList.add("cursor-down");
+      targetRingScale = Math.max(0.85, targetRingScale * 0.92);
+      targetDotScale = 0.85;
+    }, { passive: true });
+
+    window.addEventListener("mouseup", () => {
+      document.body.classList.remove("cursor-down");
+      // return to hover scale if hovering, otherwise normal
+      if (document.body.classList.contains("cursor-hover")) {
+        targetRingScale = 1.55;
+        targetDotScale = 0.9;
+      } else {
+        targetRingScale = 1;
+        targetDotScale = 1;
+      }
+    }, { passive: true });
+
+    // Reset gently when leaving window
+    window.addEventListener("mouseleave", () => {
+      targetX = 0; targetY = 0;
+      document.body.classList.remove("cursor-active");
+    });
+
+    requestAnimationFrame(tick);
+  </script>
+</body>
+</html>
